@@ -73,6 +73,28 @@ static struct fuse_operations xmp_oper = {
     .read = xmp_read,
 };
 
+void atbashCipher(char *str)
+{
+    int i;
+    i=0;
+    while (str[i] != '\0')
+    {
+        if (!((str[i] >= 0 && str[i] < 65) || (str[i] > 90 && str[i] < 97) || (str[i] > 122 && str[i] <= 127)))
+        {
+            if (str[i] >= 'A' && str[i] <= 'Z')
+            {
+                str[i] = 'Z' + 'A' - str[i];
+            }
+
+            if (str[i] >= 'a' && str[i] <= 'z')
+            {
+                str[i] = 'z' + 'a' - str[i];
+            }
+        }
+        i++;
+    }
+}
+
 int main(int argc, char *argv[])
 {
     umask(0);
