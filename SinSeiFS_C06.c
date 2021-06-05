@@ -140,6 +140,16 @@ int trimExtension(char* file)
 	return indexStart;
 }
 
+void takeSubstring(char s[], char sub[], int p, int l) {
+   int c = 0;
+   while (c < l) 
+   {
+      sub[c] = s[p + c];
+      c++;
+   }
+   sub[c] = '\0';
+}
+
 int main(int argc, char *argv[])
 {
     umask(0);
