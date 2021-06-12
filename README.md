@@ -137,3 +137,29 @@ void atbashDecrypt(char *path)
 - xmp_mkdir
 - xmp_rmdir
 - xmp_rename
+
+### Output Nomor 1:
+
+**State Awal:**
+
+![Output_State_Awal](/screenshot/1_startState.png)
+
+**1a:**
+
+![Output_1a](/screenshot/1AE.png)
+
+**1b:**
+
+![Output_1b](/screenshot/1B.png)
+
+**1c:**
+
+![Output_1c](/screenshot/1C.png)
+
+**1d:**
+
+![Output_1d](/screenshot/1D.png)
+
+**1e:**
+
+![Output_1e](/screenshot/1AE.png)
