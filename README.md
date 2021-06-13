@@ -163,3 +163,79 @@ void atbashDecrypt(char *path)
 **1e:**
 
 ![Output_1e](/screenshot/1AE.png)
+
+## Laporan Soal Nomor 4:
+
+### Permintaan Soal Nomor 4:
+
+a. Log system yang akan terbentuk bernama “SinSeiFS.log” pada direktori home pengguna (/home/[user]/SinSeiFS.log). Log system ini akan menyimpan daftar perintah system call yang telah dijalankan pada filesystem.
+
+b. Karena Sin dan Sei suka kerapian maka log yang dibuat akan dibagi menjadi dua level, yaitu INFO dan WARNING.
+
+c. Untuk log level WARNING, digunakan untuk mencatat syscall rmdir dan unlink.
+
+d. Sisanya, akan dicatat pada level INFO.
+
+e. Format untuk logging yaitu:
+
+- [Level]::[dd][mm][yyyy]-[HH]:[MM]:[SS]:[CMD]::[DESC :: DESC]
+- Level : Level logging, dd : 2 digit tanggal, mm : 2 digit bulan, yyyy : 4 digit tahun, HH : 2 digit jam (format 24 Jam),MM : 2 digit menit, SS : 2 digit detik, CMD : System Call yang terpanggil, DESC : informasi dan parameter tambahan.
+
+Contoh Format :
+
+- INFO::28052021-10:00:00:CREATE::/test.txt
+- INFO::28052021-10:01:00:RENAME::/test.txt::/rename.txt
+
+### Penyelesaian Soal Nomor 4:
+
+**Pertama, ada dua fungsi yang kami buat untuk proses pencacatan log yaitu:**
+- setLog = untuk mencatat log tanpa nama perubahan files.
+- setLogWithNameFiles = untuk mencatat log dengan record nama perubahan files.
+
+```
+void setLog(char *logCategory, char *fpath)
+{
+    time_t rawtime;
+    struct tm *timeinfo;
+    time(&rawtime);
+    timeinfo = localtime(&rawtime);
+
+    char tmp[1000];
+
+    FILE *file;
+    file = fopen("/home/namdoshaq/SinSeiFS.log", "a");
+
+    if (strcmp(logCategory, "RMDIR") == 0 || strcmp(logCategory, "UNLINK") == 0)
+        sprintf(tmp, "WARNING::%.2d%.2d%d-%.2d:%.2d:%.2d::%s::%s\n", timeinfo->tm_mday, timeinfo->tm_mon + 1, timeinfo->tm_year + 1900, timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec, logCategory, fpath);
+    else
+        sprintf(tmp, "INFO::%.2d%.2d%d-%.2d:%.2d:%.2d::%s::%s\n", timeinfo->tm_mday, timeinfo->tm_mon + 1, timeinfo->tm_year + 1900, timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec, logCategory, fpath);
+
+    fputs(tmp, file);
+    fclose(file);
+    return;
+}
+
+void setLogWithNameFiles(char *logCategory, const char *old, const char *new)
+{
+    time_t rawtime;
+    struct tm *timeinfo;
+    time(&rawtime);
+    timeinfo = localtime(&rawtime);
+
+    char tmp[1000];
+
+    FILE *file;
+    file = fopen("/home/namdoshaq/SinSeiFS.log", "a");
+
+    if (strcmp(logCategory, "RMDIR") == 0 || strcmp(logCategory, "UNLINK") == 0)
+        sprintf(tmp, "WARNING::%.2d%.2d%d-%.2d:%.2d:%.2d::%s::%s::%s\n", timeinfo->tm_mday, timeinfo->tm_mon + 1, timeinfo->tm_year + 1900, timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec, logCategory, old, new);
+    else
+        sprintf(tmp, "INFO::%.2d%.2d%d-%.2d:%.2d:%.2d::%s::%s::%s\n", timeinfo->tm_mday, timeinfo->tm_mon + 1, timeinfo->tm_year + 1900, timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec, logCategory, old, new);
+
+    fputs(tmp, file);
+    fclose(file);
+    return;
+}
+```
+
+### Output Nomor 4:
