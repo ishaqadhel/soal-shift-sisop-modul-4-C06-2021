@@ -239,3 +239,5 @@ void setLogWithNameFiles(char *logCategory, const char *old, const char *new)
 ```
 
 ### Output Nomor 4:
+
+![Output_4](/screenshot/1D.png)
